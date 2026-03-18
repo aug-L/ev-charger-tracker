@@ -26,6 +26,10 @@ A minimal full-stack real-time EV Charging Session Tracker.
    ```bash
    docker compose up --build -d
    ```
+   or
+   ```bash
+   docker compose up --build
+   ```
 4. **Note**: If running for the first time, you may need to initialize the database schema from your host:
    ```bash
    cd backend && npm run db:push
