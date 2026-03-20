@@ -25,5 +25,5 @@ EXPOSE 8080
 
 # Run the application
 WORKDIR /app/backend
-# Initialize database if needed and start the server
-CMD ["sh", "-c", "npm run db:push && node src/server.js"]
+# Initialize database in background and start the server
+CMD ["sh", "-c", "npm run db:push & node src/server.js"]
