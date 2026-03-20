@@ -23,7 +23,10 @@ COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 # Expose port
 EXPOSE 8080
 
+# Copy the startup script
+COPY backend/scripts/start.sh ./backend/scripts/start.sh
+RUN chmod +x ./backend/scripts/start.sh
+
 # Run the application
 WORKDIR /app/backend
-# Initialize database in background and start the server
-CMD ["sh", "-c", "npm run db:push & node src/server.js"]
+CMD ["./scripts/start.sh"]
