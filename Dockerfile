@@ -7,7 +7,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Final Image
-FROM node:20-alpine
+FROM node:20-alpine AS backend-builder
 WORKDIR /app
 
 # Install backend dependencies
@@ -25,4 +25,5 @@ EXPOSE 8080
 
 # Run the application
 WORKDIR /app/backend
-CMD ["node", "src/server.js"]
+# Initialize database if needed and start the server
+CMD ["sh", "-c", "npm run db:push && node src/server.js"]
