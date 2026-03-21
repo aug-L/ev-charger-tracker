@@ -6,13 +6,16 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import * as sessionController from "./controllers/sessionController.js";
+import { db } from "./db/index.js";
+import { sql } from "drizzle-orm";
 import { startCharging, stopCharging } from "./controllers/actionController.js";
 import { startSimulator } from "./services/simulator.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.join(__dirname, "../../.env") });
+// Try to load .env from the project root
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const app = express();
 const httpServer = createServer(app);
@@ -26,6 +29,15 @@ app.use(cors());
 app.use(express.json());
 
 // REST API
+app.get("/api/health", async (req, res) => {
+  try {
+    await db.execute(sql`SELECT 1`);
+    res.json({ status: "ok", database: "connected" });
+  } catch (error) {
+    res.status(500).json({ status: "error", database: "disconnected", error: error.message });
+  }
+});
+
 app.get("/api/sessions", sessionController.getSessions);
 app.get("/api/sessions/:id", sessionController.getSessionById);
 app.post("/api/sessions", (req, res) => sessionController.createSession(req, res, io));
