@@ -1,7 +1,13 @@
 import { defineConfig } from "drizzle-kit";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config({ path: "../.env" });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Try to load .env from the project root
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export default defineConfig({
   schema: "./src/db/schema.js",

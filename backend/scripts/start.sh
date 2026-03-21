@@ -3,8 +3,11 @@ set -e
 
 echo "Starting backend initialization script..."
 
+echo "Checking for DATABASE_URL environment variable..."
 if [ -z "$DATABASE_URL" ]; then
   echo "WARNING: DATABASE_URL is not set in the environment. Migrations and connection may fail."
+else
+  echo "DATABASE_URL is set (length: ${#DATABASE_URL})."
 fi
 
 # Run migrations synchronously
